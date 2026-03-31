@@ -96,4 +96,121 @@ src/
 ├── query/                   # Query pipeline
 └── upstreamproxy/           # Proxy configuration
 ```
-Architecture Overview1. Tool System (src/tools/)Each tool Claude Code can use is implemented as a self-contained module. Every tool defines its input schema, permission requirements, and execution logic.ToolPurposeBashToolRun shell commandsFileReadToolRead files (text, images, PDFs, notebooks)FileWriteToolCreate or overwrite filesFileEditToolPartial file editsGlobToolFile pattern searchGrepToolContent search (ripgrep)WebFetchToolFetch URL contentWebSearchToolWeb searchAgentToolSpawn sub-agentsSkillToolExecute skillsMCPToolMCP server callsLSPToolLanguage Server ProtocolNotebookEditToolJupyter notebook editsTaskCreate / UpdateTask managementSendMessageToolInter-agent messagingTeamCreate / DeleteTeam managementPlanMode toolsPlanning mode toggleWorktree toolsGit worktree isolationCronCreateToolScheduled triggersRemoteTriggerToolRemote triggersSleepToolWait / proactive modeSyntheticOutputToolStructured output2. Command System (src/commands/)Slash commands (prefixed with /) provide user-facing functionality./commit – create git commits/review – code review/compact – context compression/config – settings/doctor – diagnostics/login / /logout – authentication/memory – persistent memory/skills – skill management/tasks – task tracking/vim – Vim mode/diff – view changes/cost – usage cost/resume – restore session/share – share session/desktop / /mobile – app handoff3. Service Layer (src/services/)Handles integrations and system-level features:Anthropic API clientMCP server connectionsOAuth 2.0 authenticationLSP managementAnalytics and feature flagsPlugin loadingContext compressionPolicy enforcementToken estimationTeam memory syncing4. Bridge System (src/bridge/)Provides two-way communication between the CLI and IDEs (VS Code, JetBrains).Message protocolPermission callbacksREPL bridgeJWT authenticationSession execution control5. Permission SystemEvery tool invocation is checked through the permission system. Permissions may be prompted to the user, auto-approved, denied, or bypassed.Modes: Default, Plan Mode, Auto, and BypassPermissions.6. Feature FlagsUses Bun’s bun:bundle feature flags to completely remove inactive code at build time.Notable flags: PROACTIVE, KAIROS, BRIDGE_MODE, DAEMON, VOICE_MODE, AGENT_TRIGGERS, MONITOR_TOOL.Important FilesQueryEngine.ts (~46K lines): Core LLM engine handling streaming responses, tool-call loops, retries, token tracking, and thinking mode.Tool.ts (~29K lines): Defines base tool interfaces, schemas, permissions, and progress states.commands.ts (~25K lines): Registers and executes all slash commands with environment-specific loading.main.tsx: CLI startup logic including command parsing (Commander.js), Ink UI initialization, and parallel prefetching.Technology StackAreaTechnologyRuntimeBunLanguageTypeScript (strict)UIReact + InkCLICommander.jsValidationZod v4SearchripgrepProtocolsMCP, LSPAPIAnthropic SDKTelemetryOpenTelemetry + gRPCFeature FlagsGrowthBookAuthOAuth 2.0, JWT, macOS KeychainDesign HighlightsParallel Prefetching: Startup performance is improved by loading MDM settings, keychain data, and API connections in parallel before heavy imports.Lazy Loading: Large dependencies (telemetry, analytics, gRPC) are dynamically imported only when needed.Agent Swarms: Multiple agents can run in parallel using AgentTool and the coordinator system.Skill System: Reusable workflows live in skills/ and can be extended by users.Plugin Architecture: Supports both built-in and third-party plugins.DisclaimerThis repository is an educational and defensive security research archive maintained by a university student. Its purpose is to study source exposure incidents, packaging and release failures, and modern agent-based CLI architectures.All original Claude Code source remains the property of Anthropic. This repository is not affiliated with, endorsed by, or maintained by Anthropic.
+## Architecture Overview
+
+### 1. Tool System (`src/tools/`)
+Each tool Claude Code can use is implemented as a self-contained module. Every tool defines its input schema, permission requirements, and execution logic.
+
+| Tool | Purpose |
+| :--- | :--- |
+| **BashTool** | Run shell commands |
+| **FileReadTool** | Read files (text, images, PDFs, notebooks) |
+| **FileWriteTool** | Create or overwrite files |
+| **FileEditTool** | Partial file edits |
+| **GlobTool** | File pattern search |
+| **GrepTool** | Content search (ripgrep) |
+| **WebFetchTool** | Fetch URL content |
+| **WebSearchTool** | Web search |
+| **AgentTool** | Spawn sub-agents |
+| **SkillTool** | Execute skills |
+| **MCPTool** | MCP server calls |
+| **LSPTool** | Language Server Protocol |
+| **NotebookEditTool** | Jupyter notebook edits |
+| **TaskCreate / Update** | Task management |
+| **SendMessageTool** | Inter-agent messaging |
+| **TeamCreate / Delete** | Team management |
+| **PlanMode tools** | Planning mode toggle |
+| **Worktree tools** | Git worktree isolation |
+| **CronCreateTool** | Scheduled triggers |
+| **RemoteTriggerTool** | Remote triggers |
+| **SleepTool** | Wait / proactive mode |
+| **SyntheticOutputTool** | Structured output |
+
+### 2. Command System (`src/commands/`)
+Slash commands (prefixed with `/`) provide user-facing functionality.
+* `/commit` – create git commits
+* `/review` – code review
+* `/compact` – context compression
+* `/config` – settings
+* `/doctor` – diagnostics
+* `/login / /logout` – authentication
+* `/memory` – persistent memory
+* `/skills` – skill management
+* `/tasks` – task tracking
+* `/vim` – Vim mode
+* `/diff` – view changes
+* `/cost` – usage cost
+* `/resume` – restore session
+* `/share` – share session
+* `/desktop / /mobile` – app handoff
+
+### 3. Service Layer (`src/services/`)
+Handles integrations and system-level features:
+* Anthropic API client
+* MCP server connections
+* OAuth 2.0 authentication
+* LSP management
+* Analytics and feature flags
+* Plugin loading
+* Context compression
+* Policy enforcement
+* Token estimation
+* Team memory syncing
+
+### 4. Bridge System (`src/bridge/`)
+Provides two-way communication between the CLI and IDEs (VS Code, JetBrains).
+* Message protocol
+* Permission callbacks
+* REPL bridge
+* JWT authentication
+* Session execution control
+
+### 5. Permission System
+Every tool invocation is checked through the permission system. Permissions may be prompted to the user, auto-approved, denied, or bypassed. 
+**Modes:** Default, Plan Mode, Auto, and BypassPermissions.
+
+### 6. Feature Flags
+Uses Bun’s `bun:bundle` feature flags to completely remove inactive code at build time.
+**Notable flags:** `PROACTIVE`, `KAIROS`, `BRIDGE_MODE`, `DAEMON`, `VOICE_MODE`, `AGENT_TRIGGERS`, `MONITOR_TOOL`.
+
+---
+
+## Important Files
+* **`QueryEngine.ts` (~46K lines):** Core LLM engine handling streaming responses, tool-call loops, retries, token tracking, and thinking mode.
+* **`Tool.ts` (~29K lines):** Defines base tool interfaces, schemas, permissions, and progress states.
+* **`commands.ts` (~25K lines):** Registers and executes all slash commands with environment-specific loading.
+* **`main.tsx`:** CLI startup logic including command parsing (Commander.js), Ink UI initialization, and parallel prefetching.
+
+---
+
+## Technology Stack
+
+| Area | Technology |
+| :--- | :--- |
+| **Runtime** | Bun |
+| **Language** | TypeScript (strict) |
+| **UI** | React + Ink |
+| **CLI** | Commander.js |
+| **Validation** | Zod v4 |
+| **Search** | ripgrep |
+| **Protocols** | MCP, LSP |
+| **API** | Anthropic SDK |
+| **Telemetry** | OpenTelemetry + gRPC |
+| **Feature Flags** | GrowthBook |
+| **Auth** | OAuth 2.0, JWT, macOS Keychain |
+
+---
+
+## Design Highlights
+* **Parallel Prefetching:** Startup performance is improved by loading MDM settings, keychain data, and API connections in parallel before heavy imports.
+* **Lazy Loading:** Large dependencies (telemetry, analytics, gRPC) are dynamically imported only when needed.
+* **Agent Swarms:** Multiple agents can run in parallel using `AgentTool` and the coordinator system.
+* **Skill System:** Reusable workflows live in `skills/` and can be extended by users.
+* **Plugin Architecture:** Supports both built-in and third-party plugins.
+
+---
+
+## Disclaimer
+This repository is an educational and defensive security research archive maintained by a university student. Its purpose is to study source exposure incidents, packaging and release failures, and modern agent-based CLI architectures.
+
+All original Claude Code source remains the property of Anthropic. This repository is not affiliated with, endorsed by, or maintained by Anthropic.
